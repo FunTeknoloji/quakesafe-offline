@@ -27,11 +27,16 @@ const Map = () => {
     return d.toFixed(1);
   };
 
+  const openInGoogleMaps = (lat, lon) => {
+    const url = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+    window.open(url, '_blank');
+  };
+
   return (
     <div className="pb-20">
       <h1 className="text-3xl font-black mb-6 border-b border-gray-800 pb-2 text-emerald-500">TOPLANMA ALANLARI</h1>
 
-      <div className="bg-gray-900/50 rounded-2xl p-4 mb-6 border border-gray-800 flex items-center gap-3">
+      <div className="bg-gray-900/50 rounded-2xl p-4 mb-4 border border-gray-800 flex items-center gap-3">
         <Search className="text-gray-500" size={20} />
         <input
           type="text"
@@ -39,6 +44,26 @@ const Map = () => {
           className="bg-transparent border-none focus:outline-none text-white w-full"
         />
       </div>
+
+      {userLocation && (
+        <div className="bg-blue-600 rounded-[2rem] p-6 mb-6 flex items-center justify-between shadow-xl shadow-blue-900/20">
+          <div className="flex items-center gap-4">
+            <div className="bg-white/20 p-3 rounded-2xl backdrop-blur-sm">
+              <Navigation className="text-white" size={24} />
+            </div>
+            <div>
+              <h2 className="font-black text-lg leading-none uppercase italic">Konumunuz</h2>
+              <p className="text-xs font-bold opacity-80 mt-1">{userLocation.lat.toFixed(4)}, {userLocation.lon.toFixed(4)}</p>
+            </div>
+          </div>
+          <button
+            onClick={() => openInGoogleMaps(userLocation.lat, userLocation.lon)}
+            className="bg-white text-blue-600 px-4 py-2 rounded-xl font-black text-xs uppercase italic active:scale-95 transition-transform"
+          >
+            Google Haritalar
+          </button>
+        </div>
+      )}
 
       <div className="space-y-4">
         {assemblyAreas.map(area => (
@@ -58,8 +83,12 @@ const Map = () => {
                 )}
               </div>
             </div>
-            <button className="bg-emerald-600 p-2 rounded-lg">
-              <Navigation size={20} />
+            <button
+              onClick={() => openInGoogleMaps(area.lat, area.lon)}
+              className="bg-emerald-600 p-3 rounded-2xl active:scale-90 transition-transform shadow-lg shadow-emerald-900/40"
+              title="Haritada Aç"
+            >
+              <Navigation size={24} />
             </button>
           </div>
         ))}

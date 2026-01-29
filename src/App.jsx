@@ -12,6 +12,7 @@ import Family from './pages/Family';
 import AIAssistant from './pages/AIAssistant';
 import Settings from './pages/Settings';
 import Messaging from './pages/Messaging';
+import SoundTools from './pages/SoundTools';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
 
           {/* Diğer */}
           <Route path="/tools" element={<Tools />} />
+          <Route path="/sound-tools" element={<SoundTools />} />
           <Route path="/settings" element={<Settings />} />
         </Routes>
       </Layout>

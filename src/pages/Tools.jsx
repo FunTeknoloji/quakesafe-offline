@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Compass, Zap, Volume2, FileText, RefreshCw } from 'lucide-react';
-import { playWhistle } from '../utils/audio';
+import { useNavigate } from 'react-router-dom';
+import { Compass, Zap, FileText, RefreshCw, ShieldAlert } from 'lucide-react';
 
 const ToolCard = ({ title, icon: Icon, children, color }) => (
   <div className="mb-6 bg-gray-900 border border-gray-800 rounded-2xl p-6">
@@ -13,6 +13,7 @@ const ToolCard = ({ title, icon: Icon, children, color }) => (
 );
 
 const Tools = () => {
+  const navigate = useNavigate();
   const [heading, setHeading] = useState(0);
   const [tilt, setTilt] = useState({ beta: 0, gamma: 0 });
   const [flashlight, setFlashlight] = useState(false);
@@ -114,10 +115,10 @@ const Tools = () => {
         </button>
         <button
           className="p-6 rounded-[2rem] border border-gray-800 bg-gray-900 text-white flex flex-col items-center gap-3 active:bg-red-900/40 active:scale-95 transition-all"
-          onClick={() => playWhistle()}
+          onClick={() => navigate('/sound-tools')}
         >
-          <Volume2 size={32} className="text-red-500" />
-          <span className="font-black uppercase tracking-widest text-[10px]">Düdük</span>
+          <ShieldAlert size={32} className="text-red-500" />
+          <span className="font-black uppercase tracking-widest text-[10px]">Sesli Sinyaller</span>
         </button>
       </div>
 
