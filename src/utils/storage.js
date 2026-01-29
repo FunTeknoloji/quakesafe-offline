@@ -13,7 +13,7 @@ const xorDecrypt = (encoded) => {
     return str.split('').map((char, i) =>
       String.fromCharCode(char.charCodeAt(0) ^ SALT.charCodeAt(i % SALT.length))
     ).join('');
-  } catch (_) {
+  } catch {
     return null;
   }
 };

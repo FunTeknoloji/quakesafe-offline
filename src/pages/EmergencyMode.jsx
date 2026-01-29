@@ -5,15 +5,14 @@ import { startSiren, stopSiren } from '../utils/audio';
 const EmergencyMode = () => {
   const [isSirenActive, setIsSirenActive] = useState(false);
   const [isFlashActive, setIsFlashActive] = useState(false);
-  const [wakeLock, setWakeLock] = useState(null);
 
   // Wake Lock Logic
   useEffect(() => {
+    let wl = null;
     const requestWakeLock = async () => {
       try {
         if ('wakeLock' in navigator) {
-          const wl = await navigator.wakeLock.request('screen');
-          setWakeLock(wl);
+          wl = await navigator.wakeLock.request('screen');
           console.log('Wake Lock is active');
         }
       } catch (err) {
@@ -24,9 +23,8 @@ const EmergencyMode = () => {
     requestWakeLock();
 
     return () => {
-      if (wakeLock) {
-        wakeLock.release().then(() => {
-          setWakeLock(null);
+      if (wl) {
+        wl.release().then(() => {
           console.log('Wake Lock was released');
         });
       }

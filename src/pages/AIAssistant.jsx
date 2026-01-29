@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Bot, Send, HelpCircle } from 'lucide-react';
+import { Bot, Send } from 'lucide-react';
 
 const AIAssistant = () => {
   const [messages, setMessages] = useState([
