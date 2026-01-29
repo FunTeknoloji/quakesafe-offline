@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ShieldCheck, Package, MapPin, Users, CheckCircle2, Circle } from 'lucide-react';
+import GuideTabs from '../components/GuideTabs';
 
 const ChecklistItem = ({ item }) => {
   const [checked, setChecked] = useState(false);
@@ -31,6 +32,7 @@ const Section = ({ title, icon: Icon, items }) => (
 const GuidePre = () => {
   return (
     <div className="pb-20">
+      <GuideTabs />
       <h1 className="text-3xl font-black mb-6 border-b border-gray-800 pb-2">DEPREM ÖNCESİ</h1>
 
       <Section

@@ -21,16 +21,24 @@ function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/emergency" element={<EmergencyMode />} />
+
+          {/* Rehber Bölümü */}
           <Route path="/guide/pre" element={<GuidePre />} />
           <Route path="/guide/during" element={<GuideDuring />} />
           <Route path="/guide/post" element={<GuidePost />} />
           <Route path="/first-aid" element={<FirstAid />} />
-          <Route path="/tools" element={<Tools />} />
+
+          {/* Harita ve Toplanma */}
           <Route path="/map" element={<Map />} />
+
+          {/* İletişim */}
           <Route path="/family" element={<Family />} />
-          <Route path="/ai" element={<AIAssistant />} />
-          <Route path="/settings" element={<Settings />} />
           <Route path="/messaging" element={<Messaging />} />
+          <Route path="/ai" element={<AIAssistant />} />
+
+          {/* Diğer */}
+          <Route path="/tools" element={<Tools />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </Layout>
     </Router>

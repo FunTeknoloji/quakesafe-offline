@@ -1,70 +1,151 @@
-import React, { useState } from 'react';
-import { MessageSquare, Wifi, Bluetooth, Share2, Send, ShieldAlert } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Wifi, Users, Send, ShieldAlert, WifiOff, Radio, User, Bluetooth } from 'lucide-react';
+import { storage } from '../utils/storage';
 
 const Messaging = () => {
-  const [messages, setMessages] = useState([
-    { id: 1, sender: "Siz", text: "Herkes iyi mi?", time: "12:00" },
-    { id: 2, sender: "Komşu", text: "Biz iyiyiz, bahçedeyiz.", time: "12:02" }
-  ]);
+  const [activeTab, setActiveTab] = useState('global'); // 'global' or 'family'
+  const [globalMessages, setGlobalMessages] = useState(storage.get('global_chat', []));
+  const [familyMessages, setFamilyMessages] = useState(storage.get('family_chat', []));
   const [input, setInput] = useState('');
+  const [isSearching, setIsSearching] = useState(true);
+  const scrollRef = useRef(null);
+  const channelRef = useRef(null);
 
-  const sendBroadcast = () => {
-    if (!input) return;
-    const newMsg = { id: Date.now(), sender: "Siz", text: input, time: "Şimdi" };
-    setMessages([...messages, newMsg]);
+  useEffect(() => {
+    // Simulated Mesh Network using BroadcastChannel
+    channelRef.current = new BroadcastChannel('quakesafe_mesh');
+    channelRef.current.onmessage = (event) => {
+      const { type, payload } = event.data;
+      if (type === 'MSG_GLOBAL') {
+        setGlobalMessages(prev => [...prev, payload]);
+      } else if (type === 'MSG_FAMILY') {
+        setFamilyMessages(prev => [...prev, payload]);
+      }
+    };
+    return () => channelRef.current.close();
+  }, []);
+
+  useEffect(() => {
+    storage.set('global_chat', globalMessages);
+  }, [globalMessages]);
+
+  useEffect(() => {
+    storage.set('family_chat', familyMessages);
+  }, [familyMessages]);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [globalMessages, familyMessages, activeTab]);
+
+  const sendMessage = () => {
+    if (!input.trim()) return;
+    const newMsg = {
+      id: Date.now(),
+      sender: 'Siz',
+      text: input,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      status: 'Sent'
+    };
+
+    const broadcastMsg = { ...newMsg, sender: 'Yakındaki Kullanıcı' };
+
+    if (activeTab === 'global') {
+      setGlobalMessages([...globalMessages, newMsg]);
+      channelRef.current.postMessage({ type: 'MSG_GLOBAL', payload: broadcastMsg });
+    } else {
+      setFamilyMessages([...familyMessages, newMsg]);
+      channelRef.current.postMessage({ type: 'MSG_FAMILY', payload: broadcastMsg });
+    }
     setInput('');
   };
 
-  return (
-    <div className="pb-20 flex flex-col h-[calc(100vh-120px)]">
-      <h1 className="text-3xl font-black mb-6 border-b border-gray-800 pb-2 text-blue-500">YEREL MESAJLAŞMA</h1>
+  const currentMessages = activeTab === 'global' ? globalMessages : familyMessages;
 
-      <div className="bg-orange-900/30 border border-orange-500/50 p-4 rounded-xl mb-6 flex gap-3 items-center">
-        <Wifi className="text-orange-500 shrink-0" size={24} />
-        <p className="text-xs text-orange-200 leading-tight">
-          İnternet yokken Bluetooth veya Yerel Wi-Fi üzerinden yakındaki cihazlarla iletişim kurmaya çalışır.
+  return (
+    <div className="pb-2 flex flex-col h-[calc(100vh-140px)]">
+      <h1 className="text-3xl font-black mb-4 uppercase italic tracking-tighter">Mesajlaşma</h1>
+
+      <div className="flex bg-gray-900 p-1 rounded-2xl mb-4">
+        <button
+          onClick={() => setActiveTab('global')}
+          className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+            activeTab === 'global' ? 'bg-blue-600 text-white shadow-lg' : 'text-gray-500'
+          }`}
+        >
+          <Radio size={14} /> GENEL (YAKINDAKİLER)
+        </button>
+        <button
+          onClick={() => setActiveTab('family')}
+          className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
+            activeTab === 'family' ? 'bg-indigo-600 text-white shadow-lg' : 'text-gray-500'
+          }`}
+        >
+          <Users size={14} /> AİLE GRUBU
+        </button>
+      </div>
+
+      <div className="bg-blue-900/20 border border-blue-800/50 p-3 rounded-2xl mb-4 flex items-center gap-3">
+        <WifiOff className="text-blue-500 shrink-0" size={20} />
+        <p className="text-[10px] text-blue-200 font-bold leading-tight uppercase tracking-tighter">
+          Şebekesiz Bluetooth & Wi-Fi Direct Mesh Modu Aktif. Yakındaki cihazlar otomatik bağlanır.
         </p>
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">
-        {messages.map(msg => (
-          <div key={msg.id} className={`flex ${msg.sender === 'Siz' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`p-4 rounded-2xl max-w-[80%] ${
-              msg.sender === 'Siz' ? 'bg-blue-600' : 'bg-gray-800'
-            }`}>
-              <p className="text-[10px] uppercase font-bold opacity-60 mb-1">{msg.sender}</p>
-              <p className="text-lg leading-snug">{msg.text}</p>
-              <p className="text-[10px] text-right mt-1 opacity-40">{msg.time}</p>
-            </div>
+      <div
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2 scroll-smooth"
+      >
+        {currentMessages.length === 0 ? (
+          <div className="h-full flex flex-col items-center justify-center text-center p-8 opacity-40">
+            <Radio size={48} className="mb-4 animate-pulse" />
+            <p className="text-sm font-bold uppercase">Mesaj bulunamadı.</p>
+            <p className="text-[10px] mt-1">Yayın yaparak yakındakilere sesini duyur.</p>
           </div>
-        ))}
+        ) : (
+          currentMessages.map(msg => (
+            <div key={msg.id} className={`flex ${msg.sender === 'Siz' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`p-4 rounded-3xl max-w-[85%] shadow-xl ${
+                msg.sender === 'Siz' ? 'bg-blue-600 rounded-tr-none' : 'bg-gray-800 rounded-tl-none'
+              }`}>
+                <div className="flex items-center gap-2 mb-1">
+                    <User size={10} className="opacity-60" />
+                    <p className="text-[10px] uppercase font-black opacity-60">{msg.sender}</p>
+                </div>
+                <p className="text-lg leading-tight font-medium">{msg.text}</p>
+                <div className="flex justify-end gap-1 mt-1 opacity-40">
+                    <p className="text-[9px] font-bold">{msg.time}</p>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
       </div>
 
-      <div className="space-y-4">
-        <div className="flex gap-2">
-            <button className="bg-gray-900 border border-gray-800 px-4 py-2 rounded-full text-xs font-bold text-gray-400">
-                GÜVENDEYİM ŞABLONU
-            </button>
-            <button className="bg-gray-900 border border-gray-800 px-4 py-2 rounded-full text-xs font-bold text-gray-400">
-                YARDIM LAZIM!
-            </button>
-        </div>
+      <div className="space-y-3">
         <div className="flex gap-2">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Mesaj yazın..."
-            className="flex-1 bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500"
+            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+            placeholder="Mesajınızı yazın..."
+            className="flex-1 bg-gray-900 border border-gray-800 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-blue-500 placeholder:text-gray-600 font-medium"
           />
           <button
-            onClick={sendBroadcast}
-            className="bg-blue-600 p-3 rounded-xl"
+            onClick={sendMessage}
+            className="bg-blue-600 p-5 rounded-2xl shadow-lg shadow-blue-900/20 active:scale-95 transition-transform"
           >
-            <Share2 size={24} />
+            <Send size={24} />
           </button>
         </div>
-        <p className="text-[10px] text-center text-gray-600 uppercase tracking-widest">Yakındaki cihazlar taranıyor...</p>
+
+        <div className="flex justify-around text-[9px] font-black text-gray-700 uppercase tracking-widest pb-2">
+            <span className="flex items-center gap-1"><Bluetooth size={10} /> Bluetooth</span>
+            <span className="flex items-center gap-1 text-green-800"><Wifi size={10} /> Wi-Fi Direct</span>
+            <span className="flex items-center gap-1"><Radio size={10} /> Hotspot Mesh</span>
+        </div>
       </div>
     </div>
   );

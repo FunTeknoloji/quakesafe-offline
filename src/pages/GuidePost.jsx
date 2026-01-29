@@ -1,5 +1,6 @@
 import React from 'react';
 import { CheckSquare, Flame, Zap, Droplets, AlertTriangle, Info } from 'lucide-react';
+import GuideTabs from '../components/GuideTabs';
 
 const Card = ({ title, items, icon: Icon, color }) => (
   <div className="mb-6 bg-gray-900 border border-gray-800 rounded-2xl p-6">
@@ -21,6 +22,7 @@ const Card = ({ title, items, icon: Icon, color }) => (
 const GuidePost = () => {
   return (
     <div className="pb-20">
+      <GuideTabs />
       <h1 className="text-3xl font-black mb-6 border-b border-gray-800 pb-2 text-green-500">DEPREM SONRASI</h1>
 
       <div className="bg-yellow-900/40 border border-yellow-600/50 p-4 rounded-xl mb-6 flex gap-4 items-center">

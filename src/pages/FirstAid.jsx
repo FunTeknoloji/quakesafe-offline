@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { LifeBuoy, Droplets, Bone, Activity, Flame, Baby, ChevronRight, ChevronDown } from 'lucide-react';
+import GuideTabs from '../components/GuideTabs';
 
 const AidCategory = ({ title, icon: Icon, steps }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,6 +37,7 @@ const AidCategory = ({ title, icon: Icon, steps }) => {
 const FirstAid = () => {
   return (
     <div className="pb-20">
+      <GuideTabs />
       <h1 className="text-3xl font-black mb-6 border-b border-gray-800 pb-2 text-rose-500">İLK YARDIM</h1>
 
       <AidCategory

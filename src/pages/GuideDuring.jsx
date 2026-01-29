@@ -1,5 +1,6 @@
 import React from 'react';
 import { Clock, Home, TreePine, Car, AlertTriangle, XCircle } from 'lucide-react';
+import GuideTabs from '../components/GuideTabs';
 
 const Scenario = ({ title, icon: Icon, steps, color }) => (
   <div className="mb-8 bg-gray-900/50 rounded-2xl p-6 border border-gray-800">
@@ -23,6 +24,7 @@ const Scenario = ({ title, icon: Icon, steps, color }) => (
 const GuideDuring = () => {
   return (
     <div className="pb-20">
+      <GuideTabs />
       <h1 className="text-3xl font-black mb-6 border-b border-gray-800 pb-2 text-orange-500">DEPREM ANI</h1>
 
       <div className="bg-orange-600 p-6 rounded-3xl mb-8 flex flex-col items-center text-center gap-4">

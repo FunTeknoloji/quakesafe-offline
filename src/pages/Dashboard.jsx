@@ -3,28 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import {
   AlertTriangle,
   ShieldCheck,
-  Clock,
-  CheckSquare,
-  LifeBuoy,
   MapPin,
-  Wrench,
   Users,
-  MessageSquare,
-  Bot,
   WifiOff,
-  Settings as SettingsIcon
+  Activity,
+  ChevronRight
 } from 'lucide-react';
 
-const NavButton = ({ title, icon: Icon, color, onClick, description }) => (
+const QuickAction = ({ title, icon: Icon, color, onClick, description }) => (
   <button
     onClick={onClick}
-    className={`w-full p-6 rounded-2xl flex flex-col items-center justify-center gap-3 transition-transform active:scale-95 ${color} border border-white/10`}
+    className="w-full p-5 bg-gray-900 border border-gray-800 rounded-3xl flex items-center gap-4 active:scale-95 transition-transform"
   >
-    <Icon size={40} />
-    <div className="text-center">
-      <span className="text-xl font-bold block">{title}</span>
-      {description && <span className="text-xs opacity-80">{description}</span>}
+    <div className={`p-3 rounded-2xl ${color}`}>
+      <Icon size={28} />
     </div>
+    <div className="flex-1 text-left">
+      <h3 className="font-bold text-lg leading-none">{title}</h3>
+      <p className="text-xs text-gray-500 mt-1">{description}</p>
+    </div>
+    <ChevronRight size={20} className="text-gray-700" />
   </button>
 );
 
@@ -32,99 +30,64 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col gap-6">
-      {/* Offline Status & Info */}
-      <div className="bg-gray-900/50 rounded-xl p-4 flex items-center justify-between border border-gray-800">
-        <div className="flex items-center gap-3">
-          <WifiOff className="text-orange-500" size={24} />
-          <div>
-            <p className="text-sm font-medium">Çevrimdışı Mod Aktif</p>
-            <p className="text-xs text-gray-400">Tüm veriler cihazınızda saklanıyor.</p>
-          </div>
-        </div>
-        <div className="text-right">
-          <p className="text-[10px] uppercase tracking-wider text-gray-500">Son Deprem (Cache)</p>
-          <p className="text-sm font-bold text-white">4.2 - Marmara Denizi</p>
-        </div>
-      </div>
+    <div className="space-y-6">
+      <section className="flex flex-col gap-2">
+        <h2 className="text-3xl font-black italic uppercase tracking-tighter">Merhaba,</h2>
+        <p className="text-gray-400 font-medium">Güvende kalman için buradayız.</p>
+      </section>
 
-      {/* Critical Mode Button */}
+      {/* Emergency Button - Redesigned */}
       <button
         onClick={() => navigate('/emergency')}
-        className="w-full bg-red-600 hover:bg-red-700 p-8 rounded-3xl flex items-center justify-center gap-4 transition-all animate-pulse border-4 border-red-900/50 shadow-[0_0_30px_rgba(220,38,38,0.3)]"
+        className="group relative w-full aspect-video rounded-[2.5rem] overflow-hidden shadow-2xl shadow-red-900/40"
       >
-        <AlertTriangle size={48} strokeWidth={2.5} />
-        <span className="text-3xl font-black uppercase tracking-tighter">Acil Mod</span>
+        <div className="absolute inset-0 bg-red-600 group-active:bg-red-700 transition-colors flex flex-col items-center justify-center gap-2">
+          <AlertTriangle size={64} className="animate-bounce" />
+          <span className="text-4xl font-black uppercase italic tracking-tighter">Acil Mod</span>
+          <span className="text-sm font-bold opacity-80 uppercase tracking-widest">Siren ve SOS</span>
+        </div>
       </button>
 
-      {/* Grid of Modules */}
-      <div className="grid grid-cols-2 gap-4">
-        <NavButton
-          title="Öncesi"
-          icon={ShieldCheck}
-          color="bg-blue-900/40 text-blue-400"
-          onClick={() => navigate('/guide/pre')}
-        />
-        <NavButton
-          title="Deprem Anı"
-          icon={Clock}
-          color="bg-orange-900/40 text-orange-400"
-          onClick={() => navigate('/guide/during')}
-        />
-        <NavButton
-          title="Sonrası"
-          icon={CheckSquare}
-          color="bg-green-900/40 text-green-400"
-          onClick={() => navigate('/guide/post')}
-        />
-        <NavButton
-          title="İlk Yardım"
-          icon={LifeBuoy}
-          color="bg-rose-900/40 text-rose-400"
-          onClick={() => navigate('/first-aid')}
-        />
-        <NavButton
-          title="Toplanma"
-          icon={MapPin}
-          color="bg-emerald-900/40 text-emerald-400"
-          onClick={() => navigate('/map')}
-        />
-        <NavButton
-          title="Araçlar"
-          icon={Wrench}
-          color="bg-purple-900/40 text-purple-400"
-          onClick={() => navigate('/tools')}
-        />
-        <NavButton
-          title="Ailem"
-          icon={Users}
-          color="bg-indigo-900/40 text-indigo-400"
-          onClick={() => navigate('/family')}
-        />
-        <NavButton
-          title="Mesaj"
-          icon={MessageSquare}
-          color="bg-indigo-900/40 text-indigo-400"
-          onClick={() => navigate('/messaging')}
-        />
-        <NavButton
-          title="Asistan"
-          icon={Bot}
-          color="bg-cyan-900/40 text-cyan-400"
-          onClick={() => navigate('/ai')}
-        />
-        <div className="col-span-2">
-            <NavButton
-                title="Ayarlar"
-                icon={SettingsIcon}
-                color="bg-gray-900/40 text-gray-400"
-                onClick={() => navigate('/settings')}
-            />
-        </div>
+      <div className="bg-blue-900/20 border border-blue-800/50 p-4 rounded-2xl flex items-center gap-3">
+        <WifiOff className="text-blue-500" size={24} />
+        <p className="text-xs font-bold text-blue-200">
+            %100 Çevrimdışı Mod Aktif. Tüm verileriniz bu cihazda güvende.
+        </p>
       </div>
 
-      <footer className="text-center py-4 text-gray-600 text-[10px] uppercase tracking-widest">
-        QuakeSafe Offline v1.0.0
+      <section className="grid grid-cols-1 gap-4">
+        <QuickAction
+          title="Toplanma Alanları"
+          description="Sana en yakın güvenli bölgeleri gör."
+          icon={MapPin}
+          color="bg-emerald-500/20 text-emerald-500"
+          onClick={() => navigate('/map')}
+        />
+        <QuickAction
+          title="Aile Grubu"
+          description="Sevdiklerinin durumunu takip et."
+          icon={Users}
+          color="bg-indigo-500/20 text-indigo-500"
+          onClick={() => navigate('/family')}
+        />
+        <QuickAction
+          title="İlk Yardım"
+          description="Adım adım hayatta kalma rehberi."
+          icon={Activity}
+          color="bg-rose-500/20 text-rose-500"
+          onClick={() => navigate('/first-aid')}
+        />
+        <QuickAction
+          title="Hazırlık Rehberi"
+          description="Deprem öncesi yapılması gerekenler."
+          icon={ShieldCheck}
+          color="bg-orange-500/20 text-orange-500"
+          onClick={() => navigate('/guide/pre')}
+        />
+      </section>
+
+      <footer className="text-center pt-4 pb-8">
+        <p className="text-[10px] text-gray-700 font-black uppercase tracking-[0.2em]">QuakeSafe Offline v2.0</p>
       </footer>
     </div>
   );
