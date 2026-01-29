@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { CheckSquare, Flame, Zap, Droplets, AlertTriangle, Info } from 'lucide-react';
 import GuideTabs from '../components/GuideTabs';
 

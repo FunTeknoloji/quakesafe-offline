@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Wifi, Users, Send, ShieldAlert, WifiOff, Radio, User, Bluetooth } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Wifi, Users, Send, WifiOff, Radio, User, Bluetooth } from 'lucide-react';
 import { storage } from '../utils/storage';
 
 const Messaging = () => {
@@ -7,7 +7,6 @@ const Messaging = () => {
   const [globalMessages, setGlobalMessages] = useState(storage.get('global_chat', []));
   const [familyMessages, setFamilyMessages] = useState(storage.get('family_chat', []));
   const [input, setInput] = useState('');
-  const [isSearching, setIsSearching] = useState(true);
   const scrollRef = useRef(null);
   const channelRef = useRef(null);
 

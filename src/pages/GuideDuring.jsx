@@ -1,5 +1,5 @@
-import React from 'react';
-import { Clock, Home, TreePine, Car, AlertTriangle, XCircle } from 'lucide-react';
+
+import { Home, TreePine, Car, XCircle } from 'lucide-react';
 import GuideTabs from '../components/GuideTabs';
 
 const Scenario = ({ title, icon: Icon, steps, color }) => (

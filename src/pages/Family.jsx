@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Users, UserPlus, Heart, Shield, Phone, QrCode, LogOut, PlusCircle, Trash2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Users, Heart, Shield, QrCode, LogOut, PlusCircle, Trash2 } from 'lucide-react';
 import { storage } from '../utils/storage';
 
 const Family = () => {

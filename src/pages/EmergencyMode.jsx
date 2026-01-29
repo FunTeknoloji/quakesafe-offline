@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { AlertCircle, Volume2, Zap, HelpCircle, ArrowLeft } from 'lucide-react';
 import { startSiren, stopSiren } from '../utils/audio';
 

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Compass, Zap, Volume2, FileText, Ruler, RefreshCw } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Compass, Zap, Volume2, FileText, RefreshCw } from 'lucide-react';
 import { playWhistle } from '../utils/audio';
 
 const ToolCard = ({ title, icon: Icon, children, color }) => (

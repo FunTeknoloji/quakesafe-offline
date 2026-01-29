@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ShieldCheck, Package, MapPin, Users, CheckCircle2, Circle } from 'lucide-react';
+import { useState } from 'react';
+import { ShieldCheck, Package, Users, CheckCircle2, Circle } from 'lucide-react';
 import GuideTabs from '../components/GuideTabs';
 
 const ChecklistItem = ({ item }) => {

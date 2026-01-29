@@ -13,7 +13,7 @@ const xorDecrypt = (encoded) => {
     return str.split('').map((char, i) =>
       String.fromCharCode(char.charCodeAt(0) ^ SALT.charCodeAt(i % SALT.length))
     ).join('');
-  } catch (e) {
+  } catch (_) {
     return null;
   }
 };
@@ -26,8 +26,8 @@ export const storage = {
 
       const decrypted = xorDecrypt(value);
       return decrypted ? JSON.parse(decrypted) : defaultValue;
-    } catch (e) {
-      console.error('Storage get error', e);
+    } catch (error) {
+      console.error('Storage get error', error);
       return defaultValue;
     }
   },
@@ -35,8 +35,8 @@ export const storage = {
     try {
       const encrypted = xorEncrypt(JSON.stringify(value));
       localStorage.setItem(PREFIX + key, encrypted);
-    } catch (e) {
-      console.error('Storage set error', e);
+    } catch (error) {
+      console.error('Storage set error', error);
     }
   },
   remove: (key) => {

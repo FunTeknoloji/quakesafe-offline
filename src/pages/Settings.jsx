@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Settings as SettingsIcon, Bell, Moon, Globe, Battery, Shield, Database } from 'lucide-react';
+import { useState } from 'react';
+import { Settings as Bell, Globe, Battery, Shield, Database } from 'lucide-react';
 
 const SettingItem = ({ icon: Icon, title, description, children }) => (
   <div className="flex items-center justify-between p-4 bg-gray-900 border border-gray-800 rounded-2xl mb-3">

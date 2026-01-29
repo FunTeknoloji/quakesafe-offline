@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { LifeBuoy, Droplets, Bone, Activity, Flame, Baby, ChevronRight, ChevronDown } from 'lucide-react';
+import { useState } from 'react';
+import { Droplets, Bone, Activity, Flame, Baby, ChevronRight, ChevronDown } from 'lucide-react';
 import GuideTabs from '../components/GuideTabs';
 
 const AidCategory = ({ title, icon: Icon, steps }) => {
